@@ -45,7 +45,7 @@ class Blockchain:
         return self.chain[-1]
 
     # Prova de Trabaho
-    def proof_of_work(self, block, difficulty=6):
+    def proof_of_work(self, block, difficulty=4):
             block.nonce = 0
             computed_hash = block.compute_hash()
             while not computed_hash.startswith('0' * difficulty):
@@ -77,3 +77,28 @@ class Blockchain:
                     return False
             return True
 
+# Código para testar
+# Inicializa a blockchain
+bc = Blockchain()
+
+print("Minerando Bloco 1...")
+# Usando campos do JSON como argumentos para a função
+bc.add_block(
+    nome_arquivo="exemplo.txt",
+    hash_arquivo="a1b2c3d4e5f67890abcdef1234567890",
+    url="https://www.example.com/arquivos/exemplo.txt"
+)
+
+print("Minerando Bloco 2...")
+bc.add_block(
+    nome_arquivo="documento_secreto.pdf",
+    hash_arquivo="fedcba9876543210fedcba9876543210",
+    url="https://www.example.com/arquivos/secreto.pdf"
+)
+
+# Código para imprimir e validar a corrente
+print("\n--- Blockchain Final ---")
+for block in bc.chain:
+    print(f"Índice: {block.index}, Dados: {block.data}")
+
+print("\nBlockchain válida:", bc.is_chain_valid())
