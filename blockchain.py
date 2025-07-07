@@ -4,17 +4,19 @@ import json
 
 # Classe do Bloco
 class Block:
-    def __init__(self, index, remetente, destinatario, valor, previous_hash):
+    def __init__(self, index, nome_arquivo, hash_arquivo, url, previous_hash):
         self.index = index
         self.timestamp = time.time()
+        # 'data' agora é um dicionário com os metadados do arquivo
         self.data = {
-            "remetente": remetente,
-            "destinatario": destinatario,
-            "valor": valor
+            "nome_arquivo": nome_arquivo,
+            "hash_arquivo": hash_arquivo, # Este campo é a chave para a integridade!
+            "url": url
         }
         self.previous_hash = previous_hash
         self.nonce = 0
         self.hash = self.compute_hash()
+
 
 
     def compute_hash(self):
@@ -32,9 +34,9 @@ class Blockchain:
     def create_genesis_block(self):
         genesis_block = Block(
             index=0,
-            remetente="Sistema",
-            destinatario="Genesis",
-            valor=0,
+            nome_arquivo="genesis.dat",
+            hash_arquivo="00000000000000000000000000000000",
+            url="none",
             previous_hash="0"
         )
         self.chain.append(genesis_block)
@@ -43,7 +45,7 @@ class Blockchain:
         return self.chain[-1]
 
     # Prova de Trabaho
-    def proof_of_work(self, block, difficulty=2):
+    def proof_of_work(self, block, difficulty=6):
             block.nonce = 0
             computed_hash = block.compute_hash()
             while not computed_hash.startswith('0' * difficulty):
@@ -52,17 +54,17 @@ class Blockchain:
             return computed_hash
 
     # Adiciona bloco
-    def add_block(self, remetente, destinatario, valor):
-            last_block = self.get_last_block()
-            new_block = Block(
-                index=last_block.index + 1,
-                remetente=remetente,
-                destinatario=destinatario,
-                valor=valor,
-                previous_hash=last_block.hash
-            )
-            new_block.hash = self.proof_of_work(new_block)
-            self.chain.append(new_block)
+    def add_block(self, nome_arquivo, hash_arquivo, url):
+        last_block = self.get_last_block()
+        new_block = Block(
+            index=last_block.index + 1,
+            nome_arquivo=nome_arquivo,
+            hash_arquivo=hash_arquivo,
+            url=url,
+            previous_hash=last_block.hash
+        )
+        new_block.hash = self.proof_of_work(new_block)
+        self.chain.append(new_block)
 
     # Verifica se a chain é válida  
     def is_chain_valid(self):
