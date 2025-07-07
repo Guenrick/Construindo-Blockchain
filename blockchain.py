@@ -7,10 +7,9 @@ class Block:
     def __init__(self, index, nome_arquivo, hash_arquivo, url, previous_hash):
         self.index = index
         self.timestamp = time.time()
-        # 'data' agora é um dicionário com os metadados do arquivo
         self.data = {
             "nome_arquivo": nome_arquivo,
-            "hash_arquivo": hash_arquivo, # Este campo é a chave para a integridade!
+            "hash_arquivo": hash_arquivo, 
             "url": url
         }
         self.previous_hash = previous_hash
