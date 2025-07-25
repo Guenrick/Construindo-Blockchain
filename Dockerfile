@@ -1,8 +1,12 @@
-FROM python:3.10-slim
+FROM python:3.12-slim
 
-# Todos os comandos a seguir serão executados a partir deste diretório
 WORKDIR /app
 
-COPY . .
+# Copia os arquivos do projeto para dentro do container
+COPY blockchain.py .
 
+# Instala o pacote necessário
+RUN pip install ecdsa
+
+# Comando padrão ao rodar o container
 CMD ["python", "blockchain.py"]
